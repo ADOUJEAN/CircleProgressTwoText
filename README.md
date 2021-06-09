@@ -1,7 +1,6 @@
 # CirculeProgressTwoText
 A subclass of {@link android.view.View} class for creating a custom circular progressBar with the possibility of two texts inside. Such as the value of progression ...
 
-![enter image description here][4]
 # How to use CirculeProgressTwoText ?
 
 ## 1. Add the JitPack repository to your build file
