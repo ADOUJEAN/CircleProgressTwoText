@@ -1,0 +1,3 @@
+include ':CircleProgressTwoText'
+include ':app'
+rootProject.name = "CustomCircularProgressBar"
