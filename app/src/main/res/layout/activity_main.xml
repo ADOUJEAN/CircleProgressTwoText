@@ -8,5 +8,23 @@
     android:orientation="vertical"
     tools:context=".MainActivity">
 
+<ci.jjk.circleprogresstwotext.CircleProgressTwoText
+    android:id="@+id/custom_progressBar"
+    android:layout_width="200dp"
+    android:layout_height="200dp"
+    app:progress="35"
+    app:max="100"
+    app:min="0"
+    app:progressText="1000"
+    app:progressTextUnity="MB"
+    app:progressbarColor="#FF3700B3"
+    app:progressBarThickness="5dp"
+   />
 
+   <Button
+       android:layout_margin="20dp"
+       android:id="@+id/load"
+       android:layout_width="match_parent"
+       android:layout_height="wrap_content"
+       android:text=" load"/>
 </LinearLayout>
