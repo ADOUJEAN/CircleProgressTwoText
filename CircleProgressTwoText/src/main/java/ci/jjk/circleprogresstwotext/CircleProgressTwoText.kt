@@ -17,6 +17,9 @@ import android.util.Log
 import android.view.View
 import android.view.animation.DecelerateInterpolator
 
+/**
+ * CircleProgressTwoText is a subclass of {@link android.view.View} class
+ * */
 class CircleProgressTwoText(context: Context, attrs: AttributeSet) : View(context, attrs) {
     /**
      * ProgressBar type
@@ -31,14 +34,18 @@ class CircleProgressTwoText(context: Context, attrs: AttributeSet) : View(contex
     private var min = 0
     private var max = 100
 
-    /**
-     * Start the progress at 6 o'clock
-     */
+    /** Start the progress at 6 o'clock */
     private val startAngle = 90
+
+    /** Cercle trace background color **/
     private var color = Color.DKGRAY
+
     private var rectF: RectF? = null
     private var backgroundPaint: Paint? = null
     private var foregroundPaint: Paint? = null
+
+
+    /** Setters and Getters of preview variable **/
     fun getStrokeWidth(): Float {
         return strokeWidth
     }
@@ -109,13 +116,16 @@ class CircleProgressTwoText(context: Context, attrs: AttributeSet) : View(contex
     }
 
     private fun init(context: Context, attrs: AttributeSet) {
+
         rectF = RectF()
+        /** Obtain values from the XML layout **/
+
         val typedArray = context.theme.obtainStyledAttributes(
             attrs,
             R.styleable.CircleProgressBar,
             0, 0
         )
-        //Reading values from the XML layout
+        /** Reading values from the XML layout **/
         try {
             strokeWidth = typedArray.getDimension(
                 R.styleable.CircleProgressBar_progressBarThickness,
@@ -139,50 +149,51 @@ class CircleProgressTwoText(context: Context, attrs: AttributeSet) : View(contex
             typedArray.recycle()
         }
 
-            backgroundPaint = Paint(Paint.ANTI_ALIAS_FLAG)
-            backgroundPaint!!.color = adjustAlpha(color, 0.3f)
-            backgroundPaint!!.style = Paint.Style.STROKE
-            backgroundPaint!!.strokeWidth = strokeWidth
-            foregroundPaint = Paint(Paint.ANTI_ALIAS_FLAG)
-            foregroundPaint!!.color = color
-            foregroundPaint!!.style = Paint.Style.STROKE
-            foregroundPaint!!.strokeWidth = strokeWidth
+        /** Initialise cercle paint **/
+        backgroundPaint = Paint(Paint.ANTI_ALIAS_FLAG)
+        backgroundPaint!!.color = adjustAlpha(color, 0.3f)
+        backgroundPaint!!.style = Paint.Style.STROKE
+        backgroundPaint!!.strokeWidth = strokeWidth
+        foregroundPaint = Paint(Paint.ANTI_ALIAS_FLAG)
+        foregroundPaint!!.color = color
+        foregroundPaint!!.style = Paint.Style.STROKE
+        foregroundPaint!!.strokeWidth = strokeWidth
 
     }
 
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
+        /** Draw cercle and set paint **/
 
-            canvas.drawOval(rectF!!, backgroundPaint!!)
-            val angle = 360 * progress / max
-            canvas.drawArc(rectF!!, startAngle.toFloat(), angle, false, foregroundPaint!!)
+        canvas.drawOval(rectF!!, backgroundPaint!!)
+        val angle = 360 * progress / max
+        canvas.drawArc(rectF!!, startAngle.toFloat(), angle, false, foregroundPaint!!)
 
-           // Position
-            val h= (canvas.height/2).toFloat()
-            val w= (canvas.width/2).toFloat()
-            // Size
-            val textSize=h/3
-            val textUnitySize=textSize*2
+        /** Define Text height and width **/
+        val h= (canvas.height/2).toFloat()
+        val w= (canvas.width/2).toFloat()
+
+        /** Set the size on the two Texts according to cercle height **/
+        val textSize=h/3
+        val textUnitySize=textSize*2
+
+        /** Set cercle Text paint **/
+
+        val textPaint= TextPaint()
+        textPaint.setTextSize(textSize)
+        textPaint.color=Color.BLACK
+        textPaint.setTextAlign(Paint.Align.CENTER)
 
 
-            val textPaint= TextPaint()
-            textPaint.setTextSize(textSize)
-            textPaint.color=Color.BLACK
-            textPaint.setTextAlign(Paint.Align.CENTER)
+        val textPaintUnity= TextPaint()
+        textPaintUnity.setTextSize(textSize)
+        textPaintUnity.color=Color.GRAY
+        textPaintUnity.setTextAlign(Paint.Align.CENTER)
 
+        /** Draw cercle text **/
 
-           val textPaintUnity= TextPaint()
-            textPaintUnity.setTextSize(textSize)
-            textPaintUnity.color=Color.GRAY
-            textPaintUnity.setTextAlign(Paint.Align.CENTER)
-
-            canvas.drawText(progressText , w, h-((textPaint.descent()-textPaint.ascent())/2), textPaint)
-            Log.i("textPaint > h", "> h=${ h } ; w=${ w }")
-            Log.i("textUnitySize > h", "> h+120=${ h+120 } ; textUnitySize=${ textUnitySize }")
-            Log.i("textUnity h", "> h=${ h } }")
-
-            canvas.drawText( progressTextUnity, w, h+textPaintUnity.descent()-textPaintUnity.ascent(), textPaintUnity!!)
-
+        canvas.drawText(progressText , w, h-((textPaint.descent()-textPaint.ascent())/2), textPaint)
+        canvas.drawText( progressTextUnity, w, h+textPaintUnity.descent()-textPaintUnity.ascent(), textPaintUnity!!)
 
     }
 
@@ -196,23 +207,6 @@ class CircleProgressTwoText(context: Context, attrs: AttributeSet) : View(contex
                 min - strokeWidth / 2
     }
 
-    /**
-     * Lighten the given color by the factor
-     *
-     * @param color  The color to lighten
-     * @param factor 0 to 4
-     * @return A brighter color
-     */
-    fun lightenColor(color: Int, factor: Float): Int {
-        val r = Color.red(color) * factor
-        val g = Color.green(color) * factor
-        val b = Color.blue(color) * factor
-        val ir = Math.min(255, r.toInt())
-        val ig = Math.min(255, g.toInt())
-        val ib = Math.min(255, b.toInt())
-        val ia = Color.alpha(color)
-        return Color.argb(ia, ir, ig, ib)
-    }
 
     /**
      * Transparent the given color by the factor
@@ -238,7 +232,6 @@ class CircleProgressTwoText(context: Context, attrs: AttributeSet) : View(contex
      * @param progress The progress it should animate to it.
      */
     fun setProgressWithAnimation(progress: Float) {
-
         animation(progress)
     }
 
@@ -247,7 +240,8 @@ class CircleProgressTwoText(context: Context, attrs: AttributeSet) : View(contex
         val handler = Handler()
         animation(animMaxProgress)
         handler.postDelayed(
-            Runnable {animation(progress) },
+            Runnable {animation(progress)
+                     setProgressText("${progress.toInt()}")},
             1500
         )
     }
